@@ -10,6 +10,23 @@ func mutatePlusOne(x *int) { // take pointer as a parameter
 	*x = *x + 1
 }
 
+type position struct {
+	x float32
+	y float32
+}
+
+type badGuy struct {
+	name   string
+	health int
+	pos    position
+}
+
+func whereIsBadGuy(b *badGuy) {
+	x := b.pos.x
+	y := b.pos.y
+	fmt.Println(x, y)
+}
+
 func main() {
 
 	x := 5
@@ -24,4 +41,9 @@ func main() {
 
 	mutatePlusOne(xPtr)
 	fmt.Println(x)
+
+	p := position{3, 4}
+	b := badGuy{"mean person", 100, p}
+	whereIsBadGuy(&b)
+
 }
