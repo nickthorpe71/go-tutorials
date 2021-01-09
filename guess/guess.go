@@ -1,5 +1,9 @@
 package main
 
+// HOMEWORK
+// 1. Make the program print how many tries to win
+// 2. Throw an error if the user is guessing outside the range
+
 import (
 	"bufio"
 	"fmt"
@@ -12,6 +16,8 @@ func main() {
 
 	low := 1
 	high := 100
+	tries := 0
+	lastGuess := 0
 
 	fmt.Println("Think of a number from", low, "to", high)
 	fmt.Println("Hit Enter when you're ready")
@@ -37,6 +43,21 @@ func main() {
 		} else {
 			fmt.Println("That isn't one of the options...")
 		}
+
+		tries++
+		if tries == 1 {
+			fmt.Println(tries, "guess")
+		} else {
+			fmt.Println(tries, "guesses")
+		}
+
+		if guess == lastGuess {
+			fmt.Println("I don't play with cheaters...")
+			break
+		}
+
+		lastGuess = guess
+
 	}
 
 }
