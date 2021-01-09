@@ -8,7 +8,7 @@ type Position struct {
 }
 
 func main() {
-	var p Position
+	p := Position{3, 4}
 
 	fmt.Println(p.x)
 }
