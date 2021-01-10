@@ -17,11 +17,15 @@ func (page *storyPage) playStory() {
 }
 
 func (page *storyPage) addToEnd(text string) {
-	pageToAdd := &storyPage{text, nil}
 	for page.nextPage != nil {
 		page = page.nextPage
 	}
-	page.nextPage = pageToAdd
+	page.nextPage = &storyPage{text, nil}
+}
+
+func (page *storyPage) addAfter(text string) {
+	newPage := &storyPage{text, page.nextPage}
+	page.nextPage = newPage
 }
 
 func deletePage(page *storyPage, prevPage *storyPage) {
@@ -33,5 +37,6 @@ func main() {
 	page1.addToEnd("You are waiting in line at the veggie hotdog stand.")
 	page1.addToEnd("Someone in the font of the line is complaining that there is not enough dog in their veggiedog....")
 
+	page1.addAfter("Test after add")
 	page1.playStory()
 }
