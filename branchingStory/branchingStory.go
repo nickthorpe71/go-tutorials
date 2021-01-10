@@ -12,14 +12,17 @@ type storyNode struct {
 	noPath  *storyNode
 }
 
-func (node *storyNode) printStory() {
+func (node *storyNode) printStory(depth int) {
+	for i := 0; i < depth; i++ {
+		fmt.Print("  ")
+	}
 
 	fmt.Println(node.text)
 	if node.yesPath != nil {
-		node.yesPath.printStory()
+		node.yesPath.printStory(depth + 1)
 	}
 	if node.noPath != nil {
-		node.noPath.printStory()
+		node.noPath.printStory(depth + 1)
 	}
 }
 
@@ -56,5 +59,5 @@ func main() {
 	root.yesPath = &losing
 	root.noPath = &winning
 
-	root.printStory()
+	root.printStory(0)
 }
