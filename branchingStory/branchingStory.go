@@ -14,20 +14,24 @@ type storyNode struct {
 
 func (node *storyNode) play() {
 	fmt.Println(node.text)
-	scanner := bufio.NewScanner(os.Stdin)
 
-	for {
-		scanner.Scan()
-		answer := scanner.Text()
+	if node.yesPath != nil && node.noPath != nil {
 
-		if answer == "yes" {
-			node.yesPath.play()
-			break
-		} else if answer == "no" {
-			node.noPath.play()
-			break
-		} else {
-			fmt.Println("must answer 'yes' or 'no'")
+		scanner := bufio.NewScanner(os.Stdin)
+
+		for {
+			scanner.Scan()
+			answer := scanner.Text()
+
+			if answer == "yes" {
+				node.yesPath.play()
+				break
+			} else if answer == "no" {
+				node.noPath.play()
+				break
+			} else {
+				fmt.Println("must answer 'yes' or 'no'")
+			}
 		}
 	}
 
@@ -40,4 +44,6 @@ func main() {
 
 	root.yesPath = &losing
 	root.noPath = &winning
+
+	root.play()
 }
