@@ -109,5 +109,5 @@ func main() {
 	oasis.addChoice("Go Back", "Head back to where you started", &start)
 
 	start.play()
-	fmt.Println("The end")
+	fmt.Println("The end.")
 }
