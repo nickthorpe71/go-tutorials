@@ -16,8 +16,12 @@ func (page *storyPage) playStory() {
 	}
 }
 
-func (page *storyPage) addToEnd(pageToAdd *storyPage) {
-
+func (page *storyPage) addToEnd(text string) {
+	pageToAdd := &storyPage{text, nil}
+	for page.nextPage != nil {
+		page = page.nextPage
+	}
+	page.nextPage = pageToAdd
 }
 
 func deletePage(page *storyPage, prevPage *storyPage) {
@@ -26,14 +30,8 @@ func deletePage(page *storyPage, prevPage *storyPage) {
 
 func main() {
 	page1 := storyPage{"It was a hot day in Chicago.", nil}
-	page2 := storyPage{"You are waiting in line at the veggie hotdog stand.", nil}
-	page3 := storyPage{"Someone in the font of the line is complaining that there is not enough dog in their veggiedog....", nil}
-
-	page1.nextPage = &page2
-	page2.nextPage = &page3
-
-	// insertPage(&page2, "The smell of roasted vegetables was in the air.")
-	// deletePage(&page2, &page1)
+	page1.addToEnd("You are waiting in line at the veggie hotdog stand.")
+	page1.addToEnd("Someone in the font of the line is complaining that there is not enough dog in their veggiedog....")
 
 	page1.playStory()
 }
