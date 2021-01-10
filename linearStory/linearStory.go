@@ -1,5 +1,9 @@
 package main
 
+// HOMEWORK
+// add a function that will insert a page, after a given page
+// add a function that will delete a page
+
 import (
 	"fmt"
 )
@@ -18,6 +22,15 @@ func playStory(page *storyPage) {
 	playStory(page.nextPage)
 }
 
+func insertPage(previousPage *storyPage, content string) {
+	newPage := storyPage{content, previousPage.nextPage}
+	previousPage.nextPage = &newPage
+}
+
+func deletePage(page *storyPage, prevPage *storyPage) {
+	prevPage.nextPage = page.nextPage
+}
+
 func main() {
 	page1 := storyPage{"It was a hot day in Chicago.", nil}
 	page2 := storyPage{"You are waiting in line at the veggie hotdog stand.", nil}
@@ -25,6 +38,9 @@ func main() {
 
 	page1.nextPage = &page2
 	page2.nextPage = &page3
+
+	insertPage(&page2, "The smell of roasted vegetables was in the air.")
+	deletePage(&page2, &page1)
 
 	playStory(&page1)
 }
