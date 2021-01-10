@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 // linked list
@@ -40,6 +41,18 @@ func (node *storyNode) render() {
 		fmt.Println(currentChoice.cmd, ":", currentChoice.description)
 		currentChoice = currentChoice.nextChoice
 	}
+}
+
+func (node *storyNode) executeCmd(cmd string) *storyNode {
+	currentChoice := node.choices
+	for currentChoice != nil {
+		if strings.ToLower(currentChoice.cmd) == strings.ToLower(cmd) {
+			return currentChoice.nextNode
+		}
+		currentChoice = currentChoice.nextChoice
+	}
+	fmt.Println("Sorry, I didn't understand that.")
+	return node
 }
 
 func main() {
