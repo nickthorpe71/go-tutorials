@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 // linked list
 type choices struct {
 	cmd         string
@@ -25,6 +29,16 @@ func (node *storyNode) addChoice(cmd string, description string, nextNode *story
 			currentChoice = currentChoice.nextChoice
 		}
 		currentChoice.nextChoice = choice
+	}
+}
+
+func (node *storyNode) render() {
+	fmt.Println(node.text)
+	currentChoice := node.choices
+
+	for currentChoice != nil {
+		fmt.Println(currentChoice.cmd, ":", currentChoice.description)
+		currentChoice = currentChoice.nextChoice
 	}
 }
 
