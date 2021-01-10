@@ -28,6 +28,11 @@ func (page *storyPage) addAfter(text string) {
 	page.nextPage = newPage
 }
 
+// Delete
+func (page *storyPage) deletePage(pageToDelete *storyPage) {
+
+}
+
 func deletePage(page *storyPage, prevPage *storyPage) {
 	prevPage.nextPage = page.nextPage
 }
