@@ -1,9 +1,5 @@
 package main
 
-// HOMEWORK
-// add a function that will insert a page, after a given page
-// add a function that will delete a page
-
 import (
 	"fmt"
 )
@@ -13,18 +9,15 @@ type storyPage struct {
 	nextPage *storyPage
 }
 
-func playStory(page *storyPage) {
-	if page == nil {
-		return
+func (page *storyPage) playStory() {
+	for page != nil {
+		fmt.Println(page.text)
+		page = page.nextPage
 	}
-
-	fmt.Println(page.text)
-	playStory(page.nextPage)
 }
 
-func insertPage(previousPage *storyPage, content string) {
-	newPage := storyPage{content, previousPage.nextPage}
-	previousPage.nextPage = &newPage
+func (page *storyPage) addToEnd(pageToAdd *storyPage) {
+
 }
 
 func deletePage(page *storyPage, prevPage *storyPage) {
@@ -39,8 +32,8 @@ func main() {
 	page1.nextPage = &page2
 	page2.nextPage = &page3
 
-	insertPage(&page2, "The smell of roasted vegetables was in the air.")
-	deletePage(&page2, &page1)
+	// insertPage(&page2, "The smell of roasted vegetables was in the air.")
+	// deletePage(&page2, &page1)
 
-	playStory(&page1)
+	page1.playStory()
 }
