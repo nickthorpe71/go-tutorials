@@ -64,7 +64,7 @@ func (currentInventory *inventory) display() {
 	}
 }
 
-func (node *storyNode) executeCmd(cmd string, currentInventory inventory) *storyNode {
+func (node *storyNode) executeCmd(cmd string, currentInventory *inventory) *storyNode {
 	if strings.Contains(strings.ToLower(cmd), "use") {
 		for _, item := range currentInventory.items {
 			if strings.Contains(strings.ToLower(cmd), strings.ToLower(item.name)) {
@@ -93,7 +93,7 @@ func (node *storyNode) executeCmd(cmd string, currentInventory inventory) *story
 
 var scanner *bufio.Scanner
 
-func (node *storyNode) play(currentInventory inventory) {
+func (node *storyNode) play(currentInventory *inventory) {
 	node.render()
 	if node.choices != nil {
 		scanner.Scan()
@@ -113,7 +113,7 @@ func main() {
 
 	start := createAllNodesAndChoices()
 
-	start.play(currentInventory)
+	start.play(&currentInventory)
 	fmt.Println("The end.")
 }
 
