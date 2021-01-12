@@ -71,39 +71,39 @@ func createAllNodesAndChoices() storyNode {
 	`}
 
 	inShip401 := storyNode{text: `
-	Des
+	You descend into the seat of your cockpit and feel the comfort of your ship surround you. The hiss of the cabin pressurizing, bleebs of the internal systems, and the roar of the engines starting up fill you with determination.
 	`}
 
 	inShip402 := storyNode{text: `
-	Des
+	While your engines head up you gaze out of the front of your ship and watch small chunks of space debris flaot past.
 	`}
 
 	inShip403 := storyNode{text: `
-	Des
+	You realize that your cockpit smells mildly of cigarette smoke and alcohol. You grab a pizza shaped air freshener form the console and place hang it from a monitor arm. "Much better!"
 	`}
 
 	endChase := storyNode{text: `
-	Des
+	After a long chase you catch up to Jer Banta and disable his ship. On your way back to Port 401 you debate why you took this mission so seriously since this isn't even your body. You begin to think of how you might be able to contact Noyaba and how you will find your way back to Ana.
 	`}
 
 	endView := storyNode{text: `
-	Des
+	After speaking with Jer Banta you decide that there is no point in destroying anohter persons life in exchange for money. You don't even know for sure what Jer had done to have a bounty placed on his head. You remember that you have much more pressing concerns, such as finding your real body and getting back to Ana.
 	`}
 
 	endBar := storyNode{text: `
-	Des
+	Eternity is a long time, but not long enough to be chasing someone who may or may not dererve the bounty that's been placed on them. You head over to Smokin' Gunz and drink with Anigun for days. After all, there's no need to worry about your health when the body you are currently in isn't even your own.
 	`}
 
 	endPort401 := storyNode{text: `
-	Des
+	You fly back to Port 401 to tell Topps that you have given up on bounty hunting. Upon arrival you see the lamp post he is usually leaning against but he is nowhere to be found. Just then you notice that on the ground where you originally fell is a small shiny seed. This jolts your memory and you remember everything about Noyaba and Ana...
 	`}
 
 	endPort402 := storyNode{text: `
-	Des
+	You jet toward Port 402 feeling that now is not the time to chase Jer Banta. Instead, you are focused on Zella. You get to the diner and see her sitting in her usual booth. You approach and say "Is now a good time to take you up on that breakfast?"
 	`}
 
 	confrontBounty := storyNode{text: `
-	You confront Jer Banta and he tried to tell you why he has a bounty to stop you from taking him in.
+	You confront Jer Banta and he tries to tell you why he has a bounty to stop you from taking him in.
 	`}
 
 	// P401
