@@ -7,36 +7,15 @@ import (
 	"strings"
 )
 
-type item struct {
-	name        string
-	description string
-}
-
-type inventory struct {
-	items []*item
-}
-
 type choice struct {
 	cmd         string
 	description string
 	nextNode    *storyNode
 }
 
-// graph
 type storyNode struct {
 	text    string
 	choices []*choice
-	items   []*item
-}
-
-func (node *storyNode) addItem(name string, description string) {
-	item := &item{name, description}
-	node.items = append(node.items, item)
-}
-
-func (currentInventory *inventory) addItemToInventory(inputItem *item) {
-	newItem := &item{inputItem.name, inputItem.description}
-	currentInventory.items = append(currentInventory.items, newItem)
 }
 
 func (node *storyNode) addChoice(cmd string, description string, nextNode *storyNode) {
@@ -54,37 +33,10 @@ func (node *storyNode) render() {
 	}
 }
 
-func (currentInventory *inventory) display() {
-	if currentInventory.items != nil {
-		for _, item := range currentInventory.items {
-			fmt.Println(item.name, ":", item.description)
-		}
-	} else {
-		fmt.Println("empty")
-	}
-}
-
-func (node *storyNode) executeCmd(cmd string, currentInventory *inventory) *storyNode {
-	if strings.Contains(strings.ToLower(cmd), "use") {
-		for _, item := range currentInventory.items {
-			if strings.Contains(strings.ToLower(cmd), strings.ToLower(item.name)) {
-				fmt.Println("You use ", item.name)
-				return node
-			}
-		}
-	} else if strings.Contains(strings.ToLower(cmd), "pick up") || strings.Contains(strings.ToLower(cmd), "grab") {
-		for _, item := range node.items {
-			if strings.Contains(strings.ToLower(cmd), strings.ToLower(item.name)) {
-				fmt.Println("You pick up the", item.name)
-				currentInventory.addItemToInventory(item)
-				return node
-			}
-		}
-	} else {
-		for _, choice := range node.choices {
-			if strings.ToLower(choice.cmd) == strings.ToLower(cmd) {
-				return choice.nextNode
-			}
+func (node *storyNode) executeCmd(cmd string) *storyNode {
+	for _, choice := range node.choices {
+		if strings.ToLower(choice.cmd) == strings.ToLower(cmd) {
+			return choice.nextNode
 		}
 	}
 	fmt.Println("Sorry, I didn't understand that.")
@@ -93,27 +45,20 @@ func (node *storyNode) executeCmd(cmd string, currentInventory *inventory) *stor
 
 var scanner *bufio.Scanner
 
-func (node *storyNode) play(currentInventory *inventory) {
+func (node *storyNode) play() {
 	node.render()
 	if node.choices != nil {
 		scanner.Scan()
-		if strings.ToLower(scanner.Text()) == "i" {
-			currentInventory.display()
-			node.play(currentInventory)
-		} else {
-			node.executeCmd(scanner.Text(), currentInventory).play(currentInventory)
-		}
+		node.executeCmd(scanner.Text()).play()
 	}
 }
 
 func main() {
 	scanner = bufio.NewScanner(os.Stdin)
 
-	currentInventory := inventory{}
-
 	start := createAllNodesAndChoices()
 
-	start.play(&currentInventory)
+	start.play()
 	fmt.Println("The end.")
 }
 
@@ -155,7 +100,6 @@ func createAllNodesAndChoices() storyNode {
 
 	oasis.addChoice("Go Back", "Head back to where you started", &start)
 	oasis.addChoice("Pick Up Rusty Axe", "Add this item to your inventory", &oasis)
-	oasis.addItem("Rusty Axe", "An old rusty ace that Liser found lodged in a stump.")
 
 	return start
 }
