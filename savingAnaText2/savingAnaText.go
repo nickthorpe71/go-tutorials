@@ -35,6 +35,7 @@ func (node *storyNode) render() {
 }
 
 func (node *storyNode) executeCmd(cmd string) *storyNode {
+	fmt.Println("\033[2J")
 	for _, choice := range node.choices {
 		if strings.ToLower(choice.cmd) == strings.ToLower(cmd) {
 			return choice.nextNode
@@ -59,6 +60,7 @@ func main() {
 
 	start := createAllNodesAndChoices()
 
+	fmt.Println("\033[2J")
 	start.play()
 	fmt.Println("The end.")
 }
@@ -151,7 +153,7 @@ func createAllNodesAndChoices() storyNode {
 
 	// Choices
 	// Misc
-	start.addChoice("Stand", "Stand up and try to get your bearings", false, "", &lobby)
+	start.addChoice("Stand up", "<- Type the command on the left and hit enter to take that action", false, "", &lobby)
 
 	inShip401.addChoice("402", "Fly to port 402", false, "", &port402)
 	inShip401.addChoice("403", "Fly to port 403", false, "", &port403Locked)
@@ -172,7 +174,7 @@ func createAllNodesAndChoices() storyNode {
 
 	// Port 401
 	// Lobby
-	lobby.addChoice("Walk", "to the dock of Port401", false, "", &port401)
+	lobby.addChoice("Walk", "to the dock of Port 401", false, "", &port401)
 	lobby.addChoice("Saunter", "to the space bodega", false, "", &spaceBodega)
 	lobby.addChoice("Talk", "to man standing by the lightpost", true, "He says it must be nice to be a bounty hunter. Tells you this mission shouldn't take long, 15 - 20 mins", &lobby)
 	lobby.addChoice("Inspect", "man standing by the lightpost", true, "Scanner: Name: Glenn (Uno) Topps Occupation: n/a -  description, clothes, appearance, demeaner, etc. Hood, red eye smoking", &lobby)
@@ -180,11 +182,11 @@ func createAllNodesAndChoices() storyNode {
 	// P401
 	port401.addChoice("Amble", "to the space bodega", false, "", &spaceBodega)
 	port401.addChoice("Stroll", "to the lobby", false, "", &lobby)
-	port401.addChoice("Board your ship", "and fly into space", false, "", &inShip401)
+	port401.addChoice("Board", "your ship and fly into space", false, "", &inShip401)
 
 	// Bodega
 	spaceBodega.addChoice("Ramble", "to the lobby", false, "", &lobby)
-	spaceBodega.addChoice("Hike", "to the dock of Port401", false, "", &port401)
+	spaceBodega.addChoice("Hike", "to the dock of Port 401", false, "", &port401)
 	spaceBodega.addChoice("Smoke", "a cigarette", true, "describe buying a pack and smoking", &spaceBodega)
 	spaceBodega.addChoice("Eat", "a candy bar", true, "describe buying and eating tasty deli food", &spaceBodega)
 	spaceBodega.addChoice("Drink", "an energy drink", true, "describe buying and dirnking energizing beverage", &spaceBodega)
@@ -198,7 +200,7 @@ func createAllNodesAndChoices() storyNode {
 	port402.addChoice("Get in", "your sweet galactic ride and cruise", false, "", &inShip402)
 
 	// Diner
-	diner.addChoice("Trek", "to the dock of Port402", false, "", &port402)
+	diner.addChoice("Trek", "to the dock of Port 402", false, "", &port402)
 	diner.addChoice("Roam", "to the restroom", false, "", &spaceBodega)
 	diner.addChoice("Order", "a meal from the diner", true, "describe a tasty meal", &diner)
 	diner.addChoice("Drink", "coffee", true, "describe coffee", &diner)
@@ -206,7 +208,7 @@ func createAllNodesAndChoices() storyNode {
 	diner.addChoice("Check out", "the woman in booth 13", true, "Scanner: Name, Occupation - description, clothes, appearance, demeaner, etc. Attractive", &diner)
 
 	// Bathroom
-	bathroom.addChoice("Prowl", "to the dock of Port402", false, "", &port402)
+	bathroom.addChoice("Prowl", "to the dock of Port 402", false, "", &port402)
 	bathroom.addChoice("Traipse", "to the diner", false, "", &diner)
 	bathroom.addChoice("Look", "at yourself in the cracked mirror", true, "Scanner: Name: Kid Vessla, Occupation: Bounty Hunter - describe yourself", &bathroom)
 	bathroom.addChoice("Sneak", "a cigarette", true, "describe smoking", &bathroom)
@@ -229,11 +231,11 @@ func createAllNodesAndChoices() storyNode {
 
 	// The Lookout
 	theLookout.addChoice("Stride", "to Smokin' Gunz Bar", false, "", &bar)
-	theLookout.addChoice("Advance ", "to the dock of Port403", false, "", &port403Locked)
+	theLookout.addChoice("Advance ", "to the dock of Port 403", false, "", &port403Locked)
 	theLookout.addChoice("Gaze", "out into space from what is said to be the best view in the galaxy", true, "You see the most beautiful sight you've ever seen. Words don't describe how amazing this view is. One would have to see it to truly understand, and once they see it, their view of life will never be the same.", &theLookout)
 
 	// Smokin' Gunz Bar
-	bar.addChoice("Stumble Right", "to the dock of Port403", false, "", &port403Locked)
+	bar.addChoice("Stumble Right", "to the dock of Port 403", false, "", &port403Locked)
 	bar.addChoice("Float Left", "to the lookout", false, "", &theLookout)
 	bar.addChoice("Light", "a cigarette", true, "describe smoking", &bar)
 	bar.addChoice("Order Whisky", "because it's been one of those days", true, "describe whisky drinking here", &bar)
