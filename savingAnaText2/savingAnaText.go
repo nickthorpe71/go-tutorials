@@ -10,6 +10,8 @@ import (
 type choice struct {
 	cmd         string
 	description string
+	hasDialog   bool
+	dialog      string
 	nextNode    *storyNode
 }
 
@@ -18,8 +20,8 @@ type storyNode struct {
 	choices []*choice
 }
 
-func (node *storyNode) addChoice(cmd string, description string, nextNode *storyNode) {
-	choice := &choice{cmd, description, nextNode}
+func (node *storyNode) addChoice(cmd string, description string, hasDialog bool, dialog string, nextNode *storyNode) {
+	choice := &choice{cmd, description, hasDialog, dialog, nextNode}
 	node.choices = append(node.choices, choice)
 }
 
@@ -29,7 +31,6 @@ func (node *storyNode) render() {
 		for _, choice := range node.choices {
 			fmt.Println(choice.cmd, ":", choice.description)
 		}
-		fmt.Println("i : show inventory")
 	}
 }
 
@@ -64,42 +65,181 @@ func main() {
 
 func createAllNodesAndChoices() storyNode {
 
+	// Misc
 	start := storyNode{text: `
-	You wake up parched and covered in sand.
-	To the left you see a large figure standing in front of what looks to be a cave.
-	To the right you see green plants behing a blanket of desert wind.
-	Stright ahead you see nothing but gusts of sand.
+	You wake up to see a man standing by a light post. It appears you are on some kind of boardwalk in outerspace. "Hey Kid what the hell just happened??" You sit on the ground still stunned. "We were talking about your next target and then you just collapsed like an invisible refridgerator unit fell on your head." Your body feels different, you are in a place you have never seen before and you have never met the man in front of you...
 	`}
 
-	caveEntranceWithCreature := storyNode{text: `
-	You see a grotesque beast guarding the entrance to a cave. 
-	Do you want to approach the cave or head back?
+	inShip401 := storyNode{text: `
+	Des
 	`}
 
-	approachCreature := storyNode{text: `
-	In a deep gritty female voice the creature calls out in a language you cannot understand. Faster than you can blink or react the creature has one of their pale fingered feet wrapped arount your head and begins removing your limbs with the others... RIP
+	inShip402 := storyNode{text: `
+	Des
 	`}
 
-	oasis := storyNode{text: `
-	Aftwer walking throught a blinding sand storm you arrive at what appears to be an oaisis of lush greenary. 
-	There is an axe lodged in a stump.
-	Lay down and rest?
+	inShip403 := storyNode{text: `
+	Des
 	`}
 
-	lostInTheDesert := storyNode{text: `
-	You wander into the desert. Looking back you can no longer see the area you started. You wander for days and eventually die due to dehydration.
+	endChase := storyNode{text: `
+	Des
 	`}
 
-	// Start choices
-	start.addChoice("Left", "Go left toward the large figure", &caveEntranceWithCreature)
-	start.addChoice("Straight", "Go into the unknown desert", &lostInTheDesert)
-	start.addChoice("Right", "Go towards the green", &oasis)
+	endView := storyNode{text: `
+	Des
+	`}
 
-	caveEntranceWithCreature.addChoice("Go back", "Head back to where you started", &start)
-	caveEntranceWithCreature.addChoice("Approach", "Approach the cave to investigate the creature", &approachCreature)
+	endBar := storyNode{text: `
+	Des
+	`}
 
-	oasis.addChoice("Go Back", "Head back to where you started", &start)
-	oasis.addChoice("Pick Up Rusty Axe", "Add this item to your inventory", &oasis)
+	endPort401 := storyNode{text: `
+	Des
+	`}
+
+	endPort402 := storyNode{text: `
+	Des
+	`}
+
+	confrontBounty := storyNode{text: `
+	Des
+	`}
+
+	// P401
+	lobby := storyNode{text: `
+	Des
+	`}
+
+	port401 := storyNode{text: `
+	Des
+	`}
+
+	spaceBodega := storyNode{text: `
+	Des
+	`}
+
+	// P402
+	port402 := storyNode{text: `
+	Des
+	`}
+
+	diner := storyNode{text: `
+	Des
+	`}
+
+	bathroom := storyNode{text: `
+	Des
+	`}
+
+	// P403
+	port403Locked := storyNode{text: `
+	Des
+	`}
+
+	port403Unlocked := storyNode{text: `
+	Des
+	`}
+
+	theLookout := storyNode{text: `
+	Des
+	`}
+
+	bar := storyNode{text: `
+	Des
+	`}
+
+	// Choices
+	// Misc
+	start.addChoice("Stand", "Stand up and try to get your bearings", false, "", &lobby)
+
+	inShip401.addChoice("402", "Fly to port 402", false, "", &port402)
+	inShip401.addChoice("403", "Fly to port 403", false, "", &port403Locked)
+
+	inShip402.addChoice("401", "Fly to port 401", false, "", &port401)
+	inShip402.addChoice("403", "Fly to port 403", false, "", &port403Locked)
+
+	inShip403.addChoice("401", "Fly to port 401", false, "", &port401)
+	inShip403.addChoice("402", "Fly to port 402", false, "", &port402)
+
+	confrontBounty.addChoice("Jump", "in your shop and chase Jer Banta!", false, "", &endChase)
+	confrontBounty.addChoice("", "Stand up and try to get your bearings", false, "", &endView)
+	confrontBounty.addChoice("Stand", "Stand up and try to get your bearings", false, "", &endBar)
+	confrontBounty.addChoice("Stand", "Stand up and try to get your bearings", false, "", &endPort401)
+	confrontBounty.addChoice("Stand", "Stand up and try to get your bearings", false, "", &endPort402)
+
+	// -------------------
+
+	// Port 401
+	// Lobby
+	lobby.addChoice("Walk Right", "to the dock of Port401", false, "", &port401)
+	lobby.addChoice("Saunter Left", "to the space bodega", false, "", &spaceBodega)
+	lobby.addChoice("Talk", "to man standing by the lightpost", true, "He says it must be nice to be a bounty hunter. Tells you this mission shouldn't take long, 15 - 20 mins", &lobby)
+	lobby.addChoice("Inspect", "man standing by the lightpost", true, "Scanner: Name: Glenn (Uno) Topps Occupation: n/a -  description, clothes, appearance, demeaner, etc. Hood, red eye smoking", &lobby)
+
+	// P401
+	port401.addChoice("Amble Right", "to the space bodega", false, "", &spaceBodega)
+	port401.addChoice("Stroll Left", "to the lobby", false, "", &lobby)
+	port401.addChoice("Board your ship", "and fly into space", false, "", &inShip401)
+
+	// Bodega
+	spaceBodega.addChoice("Ramble Right", "to the lobby", false, "", &lobby)
+	spaceBodega.addChoice("Hike Left", "to the dock of Port401", false, "", &port401)
+	spaceBodega.addChoice("Smoke", "a cigarette", true, "describe buying a pack and smoking", &spaceBodega)
+	spaceBodega.addChoice("Eat", "a candy bar", true, "describe buying and eating tasty deli food", &spaceBodega)
+	spaceBodega.addChoice("Drink", "an energy drink", true, "describe buying and dirnking energizing beverage", &spaceBodega)
+
+	// -------------------
+
+	// Port 402
+	// P402
+	port402.addChoice("March Right", "into the bathroom", false, "", &bathroom)
+	port402.addChoice("Plod Left", "to the diner", false, "", &diner)
+	port402.addChoice("Get in", "your sweet galactic ride and cruise", false, "", &inShip402)
+
+	// Diner
+	diner.addChoice("Trek Right", "to the dock of Port402", false, "", &port402)
+	diner.addChoice("Roam Left", "to the restroom", false, "", &spaceBodega)
+	diner.addChoice("Order", "a meal from the diner", true, "describe a tasty meal", &diner)
+	diner.addChoice("Drink", "coffee", true, "describe coffee", &diner)
+	diner.addChoice("Talk to", "the woman in booth 13", true, "she tells you about the bounty, says you are cute, and asks if you want to join her for breakfast some time", &diner)
+	diner.addChoice("Check out", "the woman in booth 13", true, "Scanner: Name, Occupation - description, clothes, appearance, demeaner, etc. Attractive", &diner)
+
+	// Bathroom
+	bathroom.addChoice("Prowl Right", "to the dock of Port402", false, "", &port402)
+	bathroom.addChoice("Traipse Left", "to the diner", false, "", &diner)
+	bathroom.addChoice("Look", "in the mirror at your reflection", true, "Scanner: Name: Kid Vessla, Occupation: Bounty Hunter - describe yourself", &bathroom)
+	bathroom.addChoice("Smoke", "a cigarette", true, "describe smoking", &bathroom)
+
+	// -------------------
+
+	// Port 403
+	// P403 Locked
+	port403Locked.addChoice("Proceed Right", "to the lookout", false, "", &theLookout)
+	port403Locked.addChoice("Wander Left", "to Smokin' Gunz Bar", false, "", &bar)
+	port403Locked.addChoice("Scan", "the suspicious person standing in the corner", true, "Scanner: No Data on this person describe the person in the corner", &port403Locked)
+	port403Locked.addChoice("Ease into your space steed", "hoping there are no space police in the area", false, "", &inShip403)
+
+	// P403 Unlocked
+	port403Unlocked.addChoice("Mosey Right", "to the space bodega", false, "", &theLookout)
+	port403Unlocked.addChoice("Sprint Left", "to Smokin' Gunz Bar", false, "", &bar)
+	port403Unlocked.addChoice("Glare at", "Jer Banta, the person who is your bounty", true, "Scanner: Name, Occupation - describe Jer banta", &port403Unlocked)
+	port403Unlocked.addChoice("Confront", "the bounty!", false, "", &confrontBounty)
+	port403Unlocked.addChoice("Leap into your steel falcon", "and prepare yourself for flight", false, "", &inShip403)
+
+	// The Lookout
+	theLookout.addChoice("Stride Right", "to Smokin' Gunz Bar", false, "", &bar)
+	theLookout.addChoice("Advance Left", "to the dock of Port403", false, "", &port403Locked)
+	theLookout.addChoice("Look", "out into space from what is said to be the best view in the galaxy", true, "You see the most beautiful sight you've ever seen. Words don't describe how amazing this view is. One would have to see it to truly understand, and once they see it, their view of life will never be the same.", &theLookout)
+
+	// Smokin' Gunz Bar
+	bar.addChoice("Stumble Right", "to the dock of Port403", false, "", &port403Locked)
+	bar.addChoice("Float Left", "to the lookout", false, "", &theLookout)
+	bar.addChoice("Smoke", "a cigarette", true, "describe smoking", &bar)
+	bar.addChoice("Order Whisky", "because it's been one of those days", true, "describe whisky drinking here", &bar)
+	bar.addChoice("Order Beer", "casually", true, "describe beer drinking here and maybe conversation with the bartender", &bar)
+	bar.addChoice("Watch", "the bartender", true, "Scanner: Name, Occupation - describe Anigun while they work", &bar)
+	bar.addChoice("Talk", "to the bartender", true, "conversation with the bartender", &bar)
 
 	return start
 }
