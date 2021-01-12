@@ -101,7 +101,7 @@ func createAllNodesAndChoices() storyNode {
 	`}
 
 	endPort402 := storyNode{text: `
-	You jet toward Port 402 feeling that now is not the time to chase Jer Banta. Instead, you are focused on Zella. You get to the diner and see her sitting in her usual booth. You approach and say "Is now a good time to take you up on that breakfast?"
+	You jet toward Port 402 feeling that now is not the time to chase Jer Banta. Instead, you are focused on Zella. You get to Pot City Diner and see her sitting in her usual booth. You approach and say "Is now a good time to take you up on that breakfast?"
 	`}
 
 	confrontBounty := storyNode{text: `
@@ -196,10 +196,10 @@ func createAllNodesAndChoices() storyNode {
 	// Port 402
 	// P402
 	port402.addChoice("March", "into the bathroom", false, "", &bathroom)
-	port402.addChoice("Plod", "to the diner", false, "", &diner)
+	port402.addChoice("Plod", "over to Pot City Diner", false, "", &diner)
 	port402.addChoice("Get in", "your sweet galactic ride and cruise", false, "", &inShip402)
 
-	// Diner
+	// Pot City Diner
 	diner.addChoice("Trek", "to the dock of Port 402", false, "", &port402)
 	diner.addChoice("Roam", "to the restroom", false, "", &spaceBodega)
 	diner.addChoice("Order", "a meal from the diner", true, "describe a tasty meal", &diner)
@@ -209,7 +209,7 @@ func createAllNodesAndChoices() storyNode {
 
 	// Bathroom
 	bathroom.addChoice("Prowl", "to the dock of Port 402", false, "", &port402)
-	bathroom.addChoice("Traipse", "to the diner", false, "", &diner)
+	bathroom.addChoice("Traipse", "to to Pot City Diner", false, "", &diner)
 	bathroom.addChoice("Look", "at yourself in the cracked mirror", true, "Scanner: Name: Kid Vessla, Occupation: Bounty Hunter - describe yourself", &bathroom)
 	bathroom.addChoice("Sneak", "a cigarette", true, "describe smoking", &bathroom)
 
