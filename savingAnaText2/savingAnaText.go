@@ -163,10 +163,10 @@ func createAllNodesAndChoices() storyNode {
 	inShip403.addChoice("402", "Fly to port 402", false, "", &port402)
 
 	confrontBounty.addChoice("Jump", "in your shop and chase Jer Banta!", false, "", &endChase)
-	confrontBounty.addChoice("Abandon", "This bounty and head to the lookout", false, "", &endView)
-	confrontBounty.addChoice("Stand", "Stand up and try to get your bearings", false, "", &endBar)
-	confrontBounty.addChoice("Stand", "Stand up and try to get your bearings", false, "", &endPort401)
-	confrontBounty.addChoice("Stand", "Stand up and try to get your bearings", false, "", &endPort402)
+	confrontBounty.addChoice("Abandon", "this bounty and head to the lookout", false, "", &endView)
+	confrontBounty.addChoice("Leave", "the port and head to Smokin' Gunz", false, "", &endBar)
+	confrontBounty.addChoice("Get in", "your ship and fly back to Port401", false, "", &endPort401)
+	confrontBounty.addChoice("Decide", "to board your ship and head to Port402", false, "", &endPort402)
 
 	// -------------------
 
