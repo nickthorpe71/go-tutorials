@@ -12,6 +12,25 @@ type color struct {
 	r, g, b byte
 }
 
+type position struct {
+	x, y float32
+}
+
+type ball struct {
+	pos       position
+	radius    int
+	xvelocity float32
+	yvelocity float32
+	color     color
+}
+
+type paddle struct {
+	pos    position
+	width  int
+	height int
+	color  color
+}
+
 func setPixel(x, y int, c color, pixels []byte) {
 	index := (y*winWidth + x) * 4
 
