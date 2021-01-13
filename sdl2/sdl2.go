@@ -49,6 +49,16 @@ func main() {
 
 	pixels := make([]byte, winWidth*winHeight*4)
 
-	sdl.Delay(5000)
+	for y := 0; y < winHeight; y++ {
+		for x := 0; x < winWidth; x++ {
+			setPixel(x, y, color{byte(x % 255), byte(y % 255), 0}, pixels)
+		}
+	}
+
+	tex.Update(nil, pixels, winWidth*4)
+	renderer.Copy(tex, nil, nil)
+	renderer.Present()
+
+	sdl.Delay(10000)
 
 }
