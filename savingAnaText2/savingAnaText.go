@@ -74,7 +74,7 @@ func createAllNodesAndChoices() storyNode {
 
 	// Misc
 	start := storyNode{text: `
-	You wake up to see a man standing by a light post. It appears you are on some kind of boardwalk in outerspace. "Hey Kid what the hell just happened??" You sit on the ground still stunned. "We were talking about your next target and then you just collapsed like an invisible refridgerator unit fell on your head." Your body feels different, you are in a place you have never seen before and you have never met the man in front of you...
+	You wake up to see a man standing by a light post. It appears you are on some kind wooden paltform. "Hey Kid what the hell just happened??" You sit on the ground still stunned. "We were talking about your next target and all of a sudden you collapsed like an invisible refridgerator unit fell on your head." Your body feels different, you are in a place you have never seen before and you have never met the man in front of you...
 	`}
 
 	inShip401 := storyNode{text: `
@@ -115,45 +115,45 @@ func createAllNodesAndChoices() storyNode {
 
 	// P401
 	lobby := storyNode{text: `
-	Des
+	This looks like a boardwalk floating in space mixed with an airport. There is someone in a cloak leaning against a lamp post straight ahead of you smoking a cigarette. To the left you see what looks like a run down bodega and to the right is a large platform with strange aircrafts.
 	`}
 
 	port401 := storyNode{text: `
-	Des
+	There are many ships on this platform but one stands out to you. Seeing it is like seeing an old friend. 
 	`}
 
 	spaceBodega := storyNode{text: `
-	Des
+	You enter a dingy run down space bodega. Behind the counter sits a crusty old dude who is shirtless and singing to himself under his breath.
 	`}
 
 	// P402
 	port402 := storyNode{text: `
-	Des
+	This platform is filled with a warm light and the smell of delicious food. This port is well designed and looks very modern adn clean. You see two signs, "Pot City Diner" and "Restroom"
 	`}
 
 	diner := storyNode{text: `
-	Des
+	As you enter the diner through the decorated metal door, you are welcomed by the sent of delicious food and the gaze of a beautiful woman sitting in a booth. 
 	`}
 
 	bathroom := storyNode{text: `
-	Des
+	You admire the luxury of this bathroom. It is very clean and well kept with marble counters and shiny tile floor. The only thing that seems out of place is that the mirror above the gold plated sink has a large crack running diagonallly from the top right to the bottom left.
 	`}
 
 	// P403
 	port403Locked := storyNode{text: `
-	Des
+	This port is very dark and the smell of alcohol and cigarette smoke fills the air. In the corner you notice a suspicious man who seems to be trying to avoid being seen. There are two signs, "Smokin' Gunz Bar" and "The Lookout"
 	`}
 
 	port403Unlocked := storyNode{text: `
-	Des
+	You see Jer Banata! He is no longer in the corner hiding but is walking toward his ship!
 	`}
 
 	theLookout := storyNode{text: `
-	Des
+	This room is mostly empty with a few lounges and one giant window looking out into space. 
 	`}
 
 	bar := storyNode{text: `
-	Des
+	Upon entering the bar you hear the sound of lofi jazz and people chattering. The bartender is working, but still maanger to welcome you with a friendly nod.
 	`}
 
 	// Choices
@@ -169,7 +169,7 @@ func createAllNodesAndChoices() storyNode {
 	inShip403.addChoice("401", "Fly to port 401", false, "", &port401)
 	inShip403.addChoice("402", "Fly to port 402", false, "", &port402)
 
-	confrontBounty.addChoice("Jump", "in your shop and chase Jer Banta!", false, "", &endChase)
+	confrontBounty.addChoice("Jump", "in your ship and chase Jer Banta!", false, "", &endChase)
 	confrontBounty.addChoice("Abandon", "this bounty and head to the lookout", false, "", &endView)
 	confrontBounty.addChoice("Leave", "the port and head to Smokin' Gunz", false, "", &endBar)
 	confrontBounty.addChoice("Get in", "your ship and fly back to Port401", false, "", &endPort401)
@@ -181,8 +181,8 @@ func createAllNodesAndChoices() storyNode {
 	// Lobby
 	lobby.addChoice("Walk", "to the dock of Port 401", false, "", &port401)
 	lobby.addChoice("Saunter", "to the space bodega", false, "", &spaceBodega)
-	lobby.addChoice("Talk", "to man standing by the lightpost", true, "He says it must be nice to be a bounty hunter. Tells you this mission shouldn't take long, 15 - 20 mins", &lobby)
-	lobby.addChoice("Inspect", "man standing by the lightpost", true, "Scanner: Name: Glenn (Uno) Topps Occupation: n/a -  description, clothes, appearance, demeaner, etc. Hood, red eye smoking", &lobby)
+	lobby.addChoice("Talk", "to man standing by the lightpost", true, "Topps: \"Whelp looks like the life of a bounty hunter is just wandering around talking to people, must be nice! This Jer Banata fella you are after is a small fry compared to some fo the fish you've fried. Capturing him shouldn't take you more than 15 to 20 minutes.\"", &lobby)
+	lobby.addChoice("Inspect", "man standing by the lightpost", true, "--Scanner--\nName: Glenn (Uno) Topps\nOccupation: n/a\nHe is wearing a ragged brown cloak which covers his face. All that portrudes from the hood is a lit cigarette and a red glow from what looks to be where one of his eyes might be.", &lobby)
 
 	// P401
 	port401.addChoice("Amble", "to the space bodega", false, "", &spaceBodega)
