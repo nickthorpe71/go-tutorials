@@ -128,7 +128,7 @@ func createAllNodesAndChoices() storyNode {
 
 	// P402
 	port402 := storyNode{text: `
-	This platform is filled with a warm light and the smell of delicious food. This port is well designed and looks very modern adn clean. You see two signs, "Pot City Diner" and "Restroom"
+	This platform is filled with a warm light and the smell of delicious food. This port is well designed and looks very modern and clean. You see two signs, "Pot City Diner" and "Restroom"
 	`}
 
 	diner := storyNode{text: `
