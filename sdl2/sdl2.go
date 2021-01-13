@@ -14,5 +14,8 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	defer window.Destroy()
+
+	sdl.Delay(5000)
 
 }
