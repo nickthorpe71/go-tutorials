@@ -38,6 +38,11 @@ func (node *storyNode) executeCmd(cmd string) *storyNode {
 	fmt.Println("\033[2J")
 	for _, choice := range node.choices {
 		if strings.ToLower(choice.cmd) == strings.ToLower(cmd) {
+			if choice.hasDialog {
+				fmt.Println(choice.dialog)
+				fmt.Println("Press Enter to return")
+				scanner.Scan()
+			}
 			return choice.nextNode
 		}
 	}
