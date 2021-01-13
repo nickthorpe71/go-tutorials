@@ -17,7 +17,7 @@ type position struct {
 }
 
 type ball struct {
-	pos       position
+	position
 	radius    int
 	xvelocity float32
 	yvelocity float32
@@ -25,10 +25,14 @@ type ball struct {
 }
 
 type paddle struct {
-	pos    position
+	position
 	width  int
 	height int
 	color  color
+}
+
+func (paddle *paddle) draw() {
+
 }
 
 func setPixel(x, y int, c color, pixels []byte) {
