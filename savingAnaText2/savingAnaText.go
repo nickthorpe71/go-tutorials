@@ -192,9 +192,9 @@ func createAllNodesAndChoices() storyNode {
 	// Bodega
 	spaceBodega.addChoice("Ramble", "to the lobby", false, "", &lobby)
 	spaceBodega.addChoice("Hike", "to the dock of Port 401", false, "", &port401)
-	spaceBodega.addChoice("Smoke", "a cigarette", true, "describe buying a pack and smoking", &spaceBodega)
-	spaceBodega.addChoice("Eat", "a candy bar", true, "describe buying and eating tasty deli food", &spaceBodega)
-	spaceBodega.addChoice("Drink", "an energy drink", true, "describe buying and dirnking energizing beverage", &spaceBodega)
+	spaceBodega.addChoice("Smoke", "a cigarette", true, "You have a strange desire to smoke. The man behind the counter gives you a confused look and hurls a pack of cigarettes at you, then watches you closely as if waiting for you to do something. You take a cigarette out of the pack and place it in your mouth. Reaching in your pocket you find a lighter. You spark up the coffin nail and inhale deeply. The earthy sweet taste gives your body relief, relaxing your muscles and mind.", &spaceBodega)
+	spaceBodega.addChoice("Eat", "a candy bar", true, "Below the counter where the shop keep is muttering to himself you see a package labeled \"Rocket Bar\". You place it on the counter. The man turns and looks at you saying \"Just take it! You aren't Kid anyway so I couldn't take the money from you even if you do give it to me using her hands!\" As disturbing as this is you are very hungry. You remove the wrapping and take a bite. The flavor is creamy and sweet but the high sugar content hurts your molars.", &spaceBodega)
+	spaceBodega.addChoice("Drink", "an energy drink", true, "\"The good stuff!!\" yells the man behind the counter as you grab a can that says \"Sparks Energy\" from the fridge. You crack the can and guzzle the contents. Your body buzzes with vitality!", &spaceBodega)
 
 	// -------------------
 
