@@ -36,16 +36,32 @@ func (ball *ball) draw(pixels []byte) {
 	}
 }
 
-func (ball *ball) update() {
+func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle) {
 	ball.x += ball.xvelocity
 	ball.y += ball.yvelocity
 
 	// handle collisions
-	if ball.y < 0 {
-		ball.yvelocity = -ball.yvelocity
-	} else if int(ball.y) > winHeight {
+	if int(ball.y)-ball.radius < 0 || int(ball.y)+ball.radius > winHeight {
 		ball.yvelocity = -ball.yvelocity
 	}
+
+	if ball.x < 0 || int(ball.x) > winWidth {
+		ball.x = 300
+		ball.y = 300
+	}
+
+	if int(ball.x) < int(leftPaddle.x)+leftPaddle.width/2 {
+		if int(ball.y) > int(leftPaddle.y)-leftPaddle.height/2 && int(ball.y) < int(leftPaddle.y)+leftPaddle.height/2 {
+			ball.xvelocity -= ball.xvelocity
+		}
+	}
+
+	if int(ball.x) > int(rightPaddle.x)+rightPaddle.width/2 {
+		if int(ball.y) > int(rightPaddle.y)-rightPaddle.height/2 && int(ball.y) < int(rightPaddle.y)+rightPaddle.height/2 {
+			ball.xvelocity -= ball.xvelocity
+		}
+	}
+
 }
 
 type paddle struct {
@@ -66,6 +82,15 @@ func (paddle *paddle) draw(pixels []byte) {
 	}
 }
 
+func (paddle *paddle) update(keyState []uint8) {
+	if keyState[sdl.SCANCODE_UP] != 0 {
+		paddle.y--
+	}
+	if keyState[sdl.SCANCODE_DOWN] != 0 {
+		paddle.y++
+	}
+}
+
 func setPixel(x, y int, c color, pixels []byte) {
 	index := (y*winWidth + x) * 4
 
@@ -75,6 +100,16 @@ func setPixel(x, y int, c color, pixels []byte) {
 		pixels[index+2] = c.b
 	}
 
+}
+
+func (paddle *paddle) aiUpdate(ball *ball) {
+	paddle.y = ball.y
+}
+
+func clear(pixels []byte) {
+	for i := range pixels {
+		pixels[i] = 0
+	}
 }
 
 func main() {
@@ -111,14 +146,11 @@ func main() {
 
 	pixels := make([]byte, winWidth*winHeight*4)
 
-	// for y := 0; y < winHeight; y++ {
-	// 	for x := 0; x < winWidth; x++ {
-	// 		setPixel(x, y, color{0, 0, 0}, pixels)
-	// 	}
-	// }
+	player1 := paddle{position{50, 100}, 20, 100, color{255, 255, 255}}
+	player2 := paddle{position{float32(winWidth) - 50, 700}, 20, 100, color{255, 255, 255}}
+	ball := ball{position{300, 300}, 20, 2, 2, color{255, 255, 255}}
 
-	player1 := paddle{position{100, 100}, 20, 100, color{255, 255, 255}}
-	ball := ball{position{300, 300}, 20, 0, 0, color{255, 255, 255}}
+	keyState := sdl.GetKeyboardState()
 
 	// For Mac
 	// OSX retuires that you consume events for windows to open and work properly
@@ -129,7 +161,15 @@ func main() {
 				return
 			}
 		}
+
+		clear(pixels)
+
+		player1.update(keyState)
+		player2.aiUpdate(&ball)
+		ball.update(&player1, &player2)
+
 		player1.draw(pixels)
+		player2.draw(pixels)
 		ball.draw(pixels)
 
 		tex.Update(nil, pixels, winWidth*4)
