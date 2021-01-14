@@ -24,6 +24,18 @@ type ball struct {
 	color     color
 }
 
+func (ball *ball) draw(pixels []byte) {
+	//YAGNI Ya Aint Gonna Need It - meaning: instead of spending days optimizing how to draw a circle, just make it work and optimize it when necessary
+
+	for y := -ball.radius; y < ball.radius; y++ {
+		for x := -ball.radius; x < ball.radius; x++ {
+			if x*x+y*y < ball.radius*ball.radius {
+				setPixel(int(ball.x)+x, int(ball.y)+y, color{255, 255, 255}, pixels)
+			}
+		}
+	}
+}
+
 type paddle struct {
 	position
 	width  int
