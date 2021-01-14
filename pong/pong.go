@@ -31,8 +31,15 @@ type paddle struct {
 	color  color
 }
 
-func (paddle *paddle) draw() {
+func (paddle *paddle) draw(pixels []byte) {
+	startX := int(paddle.x) - paddle.width/2
+	startY := int(paddle.y) - paddle.height/2
 
+	for y := 0; y < winHeight; y++ {
+		for x := 0; x < winWidth; x++ {
+			setPixel(startX+x, startY+y, color{255, 255, 255}, pixels)
+		}
+	}
 }
 
 func setPixel(x, y int, c color, pixels []byte) {
