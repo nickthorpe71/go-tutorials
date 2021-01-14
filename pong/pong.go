@@ -15,7 +15,38 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const winWidth, winHeight int = 800, 600
+const winWidth, winHeight int = 800, 800
+
+var nums = [][]byte{
+	{
+		1, 1, 1,
+		1, 0, 1,
+		1, 0, 1,
+		1, 0, 1,
+		1, 1, 1,
+	},
+	{
+		0, 1, 0,
+		1, 1, 0,
+		0, 1, 0,
+		0, 1, 0,
+		1, 1, 1,
+	},
+	{
+		1, 1, 1,
+		0, 0, 1,
+		1, 1, 1,
+		1, 0, 0,
+		1, 1, 1,
+	},
+	{
+		1, 1, 1,
+		0, 0, 1,
+		1, 1, 1,
+		0, 0, 1,
+		1, 1, 1,
+	},
+}
 
 type color struct {
 	r, g, b byte
@@ -31,6 +62,26 @@ type ball struct {
 	xvelocity float32
 	yvelocity float32
 	color     color
+}
+
+func drawNumber(position position, color color, size int, num int, pixels []byte) {
+	startX := int(position.x) - (size*3)/2
+	startY := int(position.x) - (size*5)/2
+
+	for i, v := range nums[num] {
+		if v == 1 {
+			for y := startY; y < startY+size; y++ {
+				for x := startX; x < startX+size; x++ {
+					setPixel(x, y, color, pixels)
+				}
+			}
+		}
+		startX += size
+		if (i+1)%3 == 0 {
+			startY += size
+			startX -= size * 3
+		}
+	}
 }
 
 func (ball *ball) draw(pixels []byte) {
@@ -68,7 +119,7 @@ func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle, elapsedTime fl
 		}
 	}
 
-	if ball.x > rightPaddle.x+rightPaddle.width/2 {
+	if ball.x > rightPaddle.x-rightPaddle.width/2 {
 		if ball.y > rightPaddle.y-rightPaddle.height/2 && ball.y < rightPaddle.y+rightPaddle.height/2 {
 			ball.xvelocity = -ball.xvelocity
 		}
@@ -181,6 +232,7 @@ func main() {
 		}
 
 		clear(pixels)
+		drawNumber(getCenter(), color{255, 255, 255}, 20, 2, pixels)
 
 		player1.update(keyState, elapsedTime)
 		player2.aiUpdate(&ball, elapsedTime)
@@ -195,8 +247,11 @@ func main() {
 		renderer.Present()
 
 		elapsedTime = float32(time.Since(frameStart).Seconds())
+		if elapsedTime < 0.005 {
+			sdl.Delay(5 - uint32(elapsedTime/1000.0))
+			elapsedTime = float32(time.Since(frameStart).Seconds())
+		}
 
-		sdl.Delay(16)
 	}
 
 }
