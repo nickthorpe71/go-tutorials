@@ -27,7 +27,7 @@ type position struct {
 
 type ball struct {
 	position
-	radius    int
+	radius    float32
 	xvelocity float32
 	yvelocity float32
 	color     color
@@ -39,7 +39,7 @@ func (ball *ball) draw(pixels []byte) {
 	for y := -ball.radius; y < ball.radius; y++ {
 		for x := -ball.radius; x < ball.radius; x++ {
 			if x*x+y*y < ball.radius*ball.radius {
-				setPixel(int(ball.x)+x, int(ball.y)+y, ball.color, pixels)
+				setPixel(int(ball.x+x), int(ball.y+y), ball.color, pixels)
 			}
 		}
 	}
@@ -50,23 +50,23 @@ func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle) {
 	ball.y += ball.yvelocity
 
 	// handle collisions
-	if int(ball.y)-ball.radius < 0 || int(ball.y)+ball.radius > winHeight {
+	if ball.y-ball.radius < 0 || ball.y+ball.radius > float32(winHeight) {
 		ball.yvelocity = -ball.yvelocity
 	}
 
-	if ball.x < 0 || int(ball.x) > winWidth {
+	if ball.x < 0 || ball.x > float32(winWidth) {
 		ball.x = 300
 		ball.y = 300
 	}
 
-	if int(ball.x) < int(leftPaddle.x)+leftPaddle.width/2 {
-		if int(ball.y) > int(leftPaddle.y)-leftPaddle.height/2 && int(ball.y) < int(leftPaddle.y)+leftPaddle.height/2 {
+	if ball.x < leftPaddle.x+leftPaddle.width/2 {
+		if ball.y > leftPaddle.y-leftPaddle.height/2 && ball.y < leftPaddle.y+leftPaddle.height/2 {
 			ball.xvelocity = -ball.xvelocity
 		}
 	}
 
-	if int(ball.x) > int(rightPaddle.x)+rightPaddle.width/2 {
-		if int(ball.y) > int(rightPaddle.y)-rightPaddle.height/2 && int(ball.y) < int(rightPaddle.y)+rightPaddle.height/2 {
+	if ball.x > rightPaddle.x+rightPaddle.width/2 {
+		if ball.y > rightPaddle.y-rightPaddle.height/2 && ball.y < rightPaddle.y+rightPaddle.height/2 {
 			ball.xvelocity = -ball.xvelocity
 		}
 	}
@@ -75,17 +75,17 @@ func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle) {
 
 type paddle struct {
 	position
-	width  int
-	height int
+	width  float32
+	height float32
 	color  color
 }
 
 func (paddle *paddle) draw(pixels []byte) {
-	startX := int(paddle.x) - paddle.width/2
-	startY := int(paddle.y) - paddle.height/2
+	startX := int(paddle.x - paddle.width/2)
+	startY := int(paddle.y - paddle.height/2)
 
-	for y := 0; y < paddle.height; y++ {
-		for x := 0; x < paddle.width; x++ {
+	for y := 0; y < int(paddle.height); y++ {
+		for x := 0; x < int(paddle.width); x++ {
 			setPixel(startX+x, startY+y, paddle.color, pixels)
 		}
 	}
