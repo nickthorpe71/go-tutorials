@@ -7,6 +7,7 @@ import (
 )
 
 const winWidth, winHeight int = 800, 600
+const paddleSpeed float32 = 5
 
 type color struct {
 	r, g, b byte
@@ -52,13 +53,13 @@ func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle) {
 
 	if int(ball.x) < int(leftPaddle.x)+leftPaddle.width/2 {
 		if int(ball.y) > int(leftPaddle.y)-leftPaddle.height/2 && int(ball.y) < int(leftPaddle.y)+leftPaddle.height/2 {
-			ball.xvelocity -= ball.xvelocity
+			ball.xvelocity = -ball.xvelocity
 		}
 	}
 
 	if int(ball.x) > int(rightPaddle.x)+rightPaddle.width/2 {
 		if int(ball.y) > int(rightPaddle.y)-rightPaddle.height/2 && int(ball.y) < int(rightPaddle.y)+rightPaddle.height/2 {
-			ball.xvelocity -= ball.xvelocity
+			ball.xvelocity = -ball.xvelocity
 		}
 	}
 
@@ -84,10 +85,10 @@ func (paddle *paddle) draw(pixels []byte) {
 
 func (paddle *paddle) update(keyState []uint8) {
 	if keyState[sdl.SCANCODE_UP] != 0 {
-		paddle.y--
+		paddle.y -= paddleSpeed
 	}
 	if keyState[sdl.SCANCODE_DOWN] != 0 {
-		paddle.y++
+		paddle.y += paddleSpeed
 	}
 }
 
