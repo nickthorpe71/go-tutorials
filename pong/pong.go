@@ -30,9 +30,21 @@ func (ball *ball) draw(pixels []byte) {
 	for y := -ball.radius; y < ball.radius; y++ {
 		for x := -ball.radius; x < ball.radius; x++ {
 			if x*x+y*y < ball.radius*ball.radius {
-				setPixel(int(ball.x)+x, int(ball.y)+y, color{255, 255, 255}, pixels)
+				setPixel(int(ball.x)+x, int(ball.y)+y, ball.color, pixels)
 			}
 		}
+	}
+}
+
+func (ball *ball) update() {
+	ball.x += ball.xvelocity
+	ball.y += ball.yvelocity
+
+	// handle collisions
+	if ball.y < 0 {
+		ball.yvelocity = -ball.yvelocity
+	} else if int(ball.y) > winHeight {
+		ball.yvelocity = -ball.yvelocity
 	}
 }
 
@@ -47,9 +59,9 @@ func (paddle *paddle) draw(pixels []byte) {
 	startX := int(paddle.x) - paddle.width/2
 	startY := int(paddle.y) - paddle.height/2
 
-	for y := 0; y < winHeight; y++ {
-		for x := 0; x < winWidth; x++ {
-			setPixel(startX+x, startY+y, color{255, 255, 255}, pixels)
+	for y := 0; y < paddle.height; y++ {
+		for x := 0; x < paddle.width; x++ {
+			setPixel(startX+x, startY+y, paddle.color, pixels)
 		}
 	}
 }
@@ -99,15 +111,14 @@ func main() {
 
 	pixels := make([]byte, winWidth*winHeight*4)
 
-	for y := 0; y < winHeight; y++ {
-		for x := 0; x < winWidth; x++ {
-			setPixel(x, y, color{byte(x % 255), byte(y % 255), 0}, pixels)
-		}
-	}
+	// for y := 0; y < winHeight; y++ {
+	// 	for x := 0; x < winWidth; x++ {
+	// 		setPixel(x, y, color{0, 0, 0}, pixels)
+	// 	}
+	// }
 
-	tex.Update(nil, pixels, winWidth*4)
-	renderer.Copy(tex, nil, nil)
-	renderer.Present()
+	player1 := paddle{position{100, 100}, 20, 100, color{255, 255, 255}}
+	ball := ball{position{300, 300}, 20, 0, 0, color{255, 255, 255}}
 
 	// For Mac
 	// OSX retuires that you consume events for windows to open and work properly
@@ -118,6 +129,12 @@ func main() {
 				return
 			}
 		}
+		player1.draw(pixels)
+		ball.draw(pixels)
+
+		tex.Update(nil, pixels, winWidth*4)
+		renderer.Copy(tex, nil, nil)
+		renderer.Present()
 		sdl.Delay(16)
 	}
 
