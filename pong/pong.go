@@ -1,5 +1,13 @@
 package main
 
+// TODO
+// Frame rate independance
+// Score
+// Game over state
+// 2 Player
+// AI needs imperfections
+// window resizing
+
 import (
 	"fmt"
 
