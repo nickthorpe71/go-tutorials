@@ -78,19 +78,19 @@ func (debris *debris) update(ship *ship, elapsedTime float32) {
 	debris.y += debris.yvelocity * elapsedTime
 
 	// handle collisions
-	if debris.y+debris.radius > float32(winHeight) {
+	if debris.y-debris.radius > float32(winHeight) {
 		debris.y = float32(-20 - rand.Intn(40))
 		debris.x = 20 + float32(rand.Intn(winWidth-40))
 		debris.radius = 20 + float32(rand.Intn(20))
-		debris.xvelocity = 100 + float32(rand.Intn(400))
+		debris.yvelocity = 50 + float32(rand.Intn(400))
 	}
 
-	if debris.x-debris.radius < ship.x+ship.width/2 {
-		if debris.y > ship.y-ship.height/2 && debris.y < ship.y+ship.height/2 {
-			debris.xvelocity = -debris.xvelocity
-			debris.x = ship.x + ship.width/2.0 + debris.radius
+	if debris.x-debris.radius < ship.x+ship.width/3 && debris.x+debris.radius > ship.x-ship.width/3 {
+		if debris.y+debris.radius > ship.y-ship.height/3 && debris.y-debris.radius < ship.y+ship.height/3 {
+			ship.alive = false
 		}
 	}
+	//  -----
 }
 
 type ship struct {
@@ -98,6 +98,7 @@ type ship struct {
 	width  float32
 	height float32
 	speed  float32
+	alive  bool
 	color  color
 }
 
@@ -106,37 +107,47 @@ func lerp(a float32, b float32, pct float32) float32 {
 }
 
 func (ship *ship) draw(pixels []byte) {
-	startX := ship.position.x - ship.width/2
-	startY := ship.position.y - ship.height/2
+	if ship.alive {
+		startX := ship.position.x - ship.width/2
+		startY := ship.position.y - ship.height/2
 
-	for i, v := range shipGraphic {
-		if v == 1 {
-			for y := startY; y < startY+4; y++ {
-				for x := startX; x < startX+4; x++ {
-					setPixel(int(x), int(y), ship.color, pixels)
+		for i, v := range shipGraphic {
+			if v == 1 {
+				for y := startY; y < startY+4; y++ {
+					for x := startX; x < startX+4; x++ {
+						setPixel(int(x), int(y), ship.color, pixels)
+					}
 				}
 			}
-		}
-		startX += 4
-		if (i+1)%16 == 0 {
-			startY += 4
-			startX -= 4 * 16
+			startX += 4
+			if (i+1)%16 == 0 {
+				startY += 4
+				startX -= 4 * 16
+			}
 		}
 	}
 }
 
 func (ship *ship) update(keyState []uint8, elapsedTime float32) {
 	if keyState[sdl.SCANCODE_W] != 0 {
-		ship.y -= ship.speed * elapsedTime
+		if ship.y-ship.height/2 > 0 {
+			ship.y -= ship.speed * elapsedTime
+		}
 	}
 	if keyState[sdl.SCANCODE_S] != 0 {
-		ship.y += ship.speed * elapsedTime
+		if ship.y+ship.height/2 < float32(winHeight) {
+			ship.y += ship.speed * elapsedTime
+		}
 	}
 	if keyState[sdl.SCANCODE_A] != 0 {
-		ship.x -= ship.speed * elapsedTime
+		if ship.x-ship.width/2 > 0 {
+			ship.x -= ship.speed * elapsedTime
+		}
 	}
 	if keyState[sdl.SCANCODE_D] != 0 {
-		ship.x += ship.speed * elapsedTime
+		if ship.x+ship.width/2 < float32(winHeight) {
+			ship.x += ship.speed * elapsedTime
+		}
 	}
 }
 
@@ -189,11 +200,11 @@ func main() {
 
 	pixels := make([]byte, winWidth*winHeight*4)
 
-	ship := ship{position{400, 700}, 64, 64, 300, color{255, 255, 255}}
+	ship := ship{position{400, 700}, 64, 64, 300, true, color{255, 255, 255}}
 	debris1 := debris{position{20 + float32(rand.Intn(winWidth-40)), 0}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
-	debris2 := debris{position{20 + float32(rand.Intn(winWidth-40)), -30 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
-	debris3 := debris{position{20 + float32(rand.Intn(winWidth-40)), -50 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
-	debris4 := debris{position{20 + float32(rand.Intn(winWidth-40)), -20 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris2 := debris{position{20 + float32(rand.Intn(winWidth-40)), -30 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris3 := debris{position{20 + float32(rand.Intn(winWidth-40)), -50 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris4 := debris{position{20 + float32(rand.Intn(winWidth-40)), -20 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(400)), color{255, 222, 222}}
 
 	keyState := sdl.GetKeyboardState()
 
