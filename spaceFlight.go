@@ -1,13 +1,5 @@
 package main
 
-// TODO
-// Frame rate independance
-// Score
-// Game over state
-// 2 Player
-// AI needs imperfections
-// window resizing
-
 import (
 	"fmt"
 	"time"
@@ -80,7 +72,7 @@ func getCenter() position {
 	return position{float32(winWidth) / 2, float32(winHeight) / 2}
 }
 
-func (ball *ball) update(leftship *ship, elapsedTime float32) {
+func (ball *ball) update(ship *ship, elapsedTime float32) {
 	ball.x += ball.xvelocity * elapsedTime
 	ball.y += ball.yvelocity * elapsedTime
 
@@ -93,15 +85,14 @@ func (ball *ball) update(leftship *ship, elapsedTime float32) {
 		ball.position = getCenter()
 		state = start
 	} else if ball.x > float32(winWidth) {
-		leftship.score++
 		ball.position = getCenter()
 		state = start
 	}
 
-	if ball.x-ball.radius < leftship.x+leftship.width/2 {
-		if ball.y > leftship.y-leftship.height/2 && ball.y < leftship.y+leftship.height/2 {
+	if ball.x-ball.radius < ship.x+ship.width/2 {
+		if ball.y > ship.y-ship.height/2 && ball.y < ship.y+ship.height/2 {
 			ball.xvelocity = -ball.xvelocity
-			ball.x = leftship.x + leftship.width/2.0 + ball.radius
+			ball.x = ship.x + ship.width/2.0 + ball.radius
 		}
 	}
 }
