@@ -202,9 +202,10 @@ func main() {
 
 	ship := ship{position{400, 700}, 64, 64, 300, true, color{255, 255, 255}}
 	debris1 := debris{position{20 + float32(rand.Intn(winWidth-40)), 0}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
-	debris2 := debris{position{20 + float32(rand.Intn(winWidth-40)), -30 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(400)), color{255, 222, 222}}
-	debris3 := debris{position{20 + float32(rand.Intn(winWidth-40)), -50 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(400)), color{255, 222, 222}}
-	debris4 := debris{position{20 + float32(rand.Intn(winWidth-40)), -20 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris2 := debris{position{20 + float32(rand.Intn(winWidth-40)), -20 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(300)), color{255, 222, 222}}
+	debris3 := debris{position{20 + float32(rand.Intn(winWidth-40)), -30 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(300)), color{255, 222, 222}}
+	debris4 := debris{position{20 + float32(rand.Intn(winWidth-40)), -50 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(300)), color{255, 222, 222}}
+	debris5 := debris{position{20 + float32(rand.Intn(winWidth-40)), -80 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 50 + float32(rand.Intn(300)), color{255, 222, 222}}
 
 	keyState := sdl.GetKeyboardState()
 
@@ -226,6 +227,7 @@ func main() {
 		debris2.update(&ship, elapsedTime)
 		debris3.update(&ship, elapsedTime)
 		debris4.update(&ship, elapsedTime)
+		debris5.update(&ship, elapsedTime)
 
 		clear(pixels)
 		ship.draw(pixels)
@@ -233,6 +235,7 @@ func main() {
 		debris2.draw(pixels)
 		debris3.draw(pixels)
 		debris4.draw(pixels)
+		debris5.draw(pixels)
 
 		tex.Update(nil, pixels, winWidth*4)
 		renderer.Copy(tex, nil, nil)
