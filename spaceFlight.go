@@ -109,22 +109,22 @@ func lerp(a float32, b float32, pct float32) float32 {
 	return a + pct*(b-a)
 }
 
-func (ship *ship) draw(pixelsize int, pixels []byte) {
-	startX := int(ship.position.x) - (pixelsize*16)/2
-	startY := int(ship.position.y) - (pixelsize*16)/2
+func (ship *ship) draw(pixels []byte) {
+	startX := ship.position.x - ship.width/2
+	startY := ship.position.y - ship.height/2
 
 	for i, v := range shipGraphic {
 		if v == 1 {
-			for y := startY; y < startY+pixelsize; y++ {
-				for x := startX; x < startX+pixelsize; x++ {
-					setPixel(x, y, ship.color, pixels)
+			for y := startY; y < startY+4; y++ {
+				for x := startX; x < startX+4; x++ {
+					setPixel(int(x), int(y), ship.color, pixels)
 				}
 			}
 		}
-		startX += pixelsize
+		startX += 4
 		if (i+1)%16 == 0 {
-			startY += pixelsize
-			startX -= pixelsize * 16
+			startY += 4
+			startX -= 4 * 16
 		}
 	}
 }
@@ -193,7 +193,7 @@ func main() {
 
 	pixels := make([]byte, winWidth*winHeight*4)
 
-	ship := ship{position{50, 100}, 20, 100, 300, color{255, 255, 255}}
+	ship := ship{position{400, 700}, 64, 64, 300, color{255, 255, 255}}
 	ball := ball{position{300, 300}, 20, 400, 400, color{255, 255, 255}}
 
 	keyState := sdl.GetKeyboardState()
@@ -215,7 +215,7 @@ func main() {
 		ball.update(&ship, elapsedTime)
 
 		clear(pixels)
-		ship.draw(4, pixels)
+		ship.draw(pixels)
 		ball.draw(pixels)
 
 		tex.Update(nil, pixels, winWidth*4)
