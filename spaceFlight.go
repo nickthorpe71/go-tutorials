@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -50,7 +51,7 @@ type position struct {
 	x, y float32
 }
 
-type ball struct {
+type debris struct {
 	position
 	radius    float32
 	xvelocity float32
@@ -58,11 +59,11 @@ type ball struct {
 	color     color
 }
 
-func (ball *ball) draw(pixels []byte) {
-	for y := -ball.radius; y < ball.radius; y++ {
-		for x := -ball.radius; x < ball.radius; x++ {
-			if x*x+y*y < ball.radius*ball.radius {
-				setPixel(int(ball.x+x), int(ball.y+y), ball.color, pixels)
+func (debris *debris) draw(pixels []byte) {
+	for y := -debris.radius; y < debris.radius; y++ {
+		for x := -debris.radius; x < debris.radius; x++ {
+			if x*x+y*y < debris.radius*debris.radius {
+				setPixel(int(debris.x+x), int(debris.y+y), debris.color, pixels)
 			}
 		}
 	}
@@ -72,27 +73,22 @@ func getCenter() position {
 	return position{float32(winWidth) / 2, float32(winHeight) / 2}
 }
 
-func (ball *ball) update(ship *ship, elapsedTime float32) {
-	ball.x += ball.xvelocity * elapsedTime
-	ball.y += ball.yvelocity * elapsedTime
+func (debris *debris) update(ship *ship, elapsedTime float32) {
+	debris.x += debris.xvelocity * elapsedTime
+	debris.y += debris.yvelocity * elapsedTime
 
 	// handle collisions
-	if ball.y-ball.radius < 0 || ball.y+ball.radius > float32(winHeight) {
-		ball.yvelocity = -ball.yvelocity
+	if debris.y+debris.radius > float32(winHeight) {
+		debris.y = float32(-20 - rand.Intn(40))
+		debris.x = 20 + float32(rand.Intn(winWidth-40))
+		debris.radius = 20 + float32(rand.Intn(20))
+		debris.xvelocity = 100 + float32(rand.Intn(400))
 	}
 
-	if ball.x < 0 {
-		ball.position = getCenter()
-		state = start
-	} else if ball.x > float32(winWidth) {
-		ball.position = getCenter()
-		state = start
-	}
-
-	if ball.x-ball.radius < ship.x+ship.width/2 {
-		if ball.y > ship.y-ship.height/2 && ball.y < ship.y+ship.height/2 {
-			ball.xvelocity = -ball.xvelocity
-			ball.x = ship.x + ship.width/2.0 + ball.radius
+	if debris.x-debris.radius < ship.x+ship.width/2 {
+		if debris.y > ship.y-ship.height/2 && debris.y < ship.y+ship.height/2 {
+			debris.xvelocity = -debris.xvelocity
+			debris.x = ship.x + ship.width/2.0 + debris.radius
 		}
 	}
 }
@@ -194,7 +190,10 @@ func main() {
 	pixels := make([]byte, winWidth*winHeight*4)
 
 	ship := ship{position{400, 700}, 64, 64, 300, color{255, 255, 255}}
-	ball := ball{position{300, 300}, 20, 400, 400, color{255, 255, 255}}
+	debris1 := debris{position{20 + float32(rand.Intn(winWidth-40)), 0}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris2 := debris{position{20 + float32(rand.Intn(winWidth-40)), -30 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris3 := debris{position{20 + float32(rand.Intn(winWidth-40)), -50 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
+	debris4 := debris{position{20 + float32(rand.Intn(winWidth-40)), -20 - float32(rand.Intn(20))}, 20 + float32(rand.Intn(20)), 0, 100 + float32(rand.Intn(400)), color{255, 222, 222}}
 
 	keyState := sdl.GetKeyboardState()
 
@@ -212,11 +211,17 @@ func main() {
 		}
 
 		ship.update(keyState, elapsedTime)
-		ball.update(&ship, elapsedTime)
+		debris1.update(&ship, elapsedTime)
+		debris2.update(&ship, elapsedTime)
+		debris3.update(&ship, elapsedTime)
+		debris4.update(&ship, elapsedTime)
 
 		clear(pixels)
 		ship.draw(pixels)
-		ball.draw(pixels)
+		debris1.draw(pixels)
+		debris2.draw(pixels)
+		debris3.draw(pixels)
+		debris4.draw(pixels)
 
 		tex.Update(nil, pixels, winWidth*4)
 		renderer.Copy(tex, nil, nil)
