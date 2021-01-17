@@ -27,37 +27,27 @@ const (
 
 var state = start
 
-// --
-
-var nums = [][]byte{
-	{
-		1, 1, 1,
-		1, 0, 1,
-		1, 0, 1,
-		1, 0, 1,
-		1, 1, 1,
-	},
-	{
-		0, 1, 0,
-		1, 1, 0,
-		0, 1, 0,
-		0, 1, 0,
-		1, 1, 1,
-	},
-	{
-		1, 1, 1,
-		0, 0, 1,
-		1, 1, 1,
-		1, 0, 0,
-		1, 1, 1,
-	},
-	{
-		1, 1, 1,
-		0, 0, 1,
-		1, 1, 1,
-		0, 0, 1,
-		1, 1, 1,
-	},
+var shipGraphic = []byte{
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+	1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+	1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+	1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+	1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+	1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+	1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+	1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
 }
 
 type color struct {
@@ -76,29 +66,7 @@ type ball struct {
 	color     color
 }
 
-func drawNumber(position position, color color, size int, num int, pixels []byte) {
-	startX := int(position.x) - (size*3)/2
-	startY := int(position.y) - (size*5)/2
-
-	for i, v := range nums[num] {
-		if v == 1 {
-			for y := startY; y < startY+size; y++ {
-				for x := startX; x < startX+size; x++ {
-					setPixel(x, y, color, pixels)
-				}
-			}
-		}
-		startX += size
-		if (i+1)%3 == 0 {
-			startY += size
-			startX -= size * 3
-		}
-	}
-}
-
 func (ball *ball) draw(pixels []byte) {
-	//YAGNI Ya Aint Gonna Need It - meaning: instead of spending days optimizing how to draw a circle, just make it work and optimize it when necessary
-
 	for y := -ball.radius; y < ball.radius; y++ {
 		for x := -ball.radius; x < ball.radius; x++ {
 			if x*x+y*y < ball.radius*ball.radius {
@@ -112,7 +80,7 @@ func getCenter() position {
 	return position{float32(winWidth) / 2, float32(winHeight) / 2}
 }
 
-func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle, elapsedTime float32) {
+func (ball *ball) update(leftship *ship, elapsedTime float32) {
 	ball.x += ball.xvelocity * elapsedTime
 	ball.y += ball.yvelocity * elapsedTime
 
@@ -122,37 +90,27 @@ func (ball *ball) update(leftPaddle *paddle, rightPaddle *paddle, elapsedTime fl
 	}
 
 	if ball.x < 0 {
-		rightPaddle.score++
 		ball.position = getCenter()
 		state = start
 	} else if ball.x > float32(winWidth) {
-		leftPaddle.score++
+		leftship.score++
 		ball.position = getCenter()
 		state = start
 	}
 
-	if ball.x-ball.radius < leftPaddle.x+leftPaddle.width/2 {
-		if ball.y > leftPaddle.y-leftPaddle.height/2 && ball.y < leftPaddle.y+leftPaddle.height/2 {
+	if ball.x-ball.radius < leftship.x+leftship.width/2 {
+		if ball.y > leftship.y-leftship.height/2 && ball.y < leftship.y+leftship.height/2 {
 			ball.xvelocity = -ball.xvelocity
-			ball.x = leftPaddle.x + leftPaddle.width/2.0 + ball.radius
+			ball.x = leftship.x + leftship.width/2.0 + ball.radius
 		}
 	}
-
-	if ball.x+ball.radius > rightPaddle.x-rightPaddle.width/2 {
-		if ball.y > rightPaddle.y-rightPaddle.height/2 && ball.y < rightPaddle.y+rightPaddle.height/2 {
-			ball.xvelocity = -ball.xvelocity
-			ball.x = rightPaddle.x - rightPaddle.width/2.0 - ball.radius
-		}
-	}
-
 }
 
-type paddle struct {
+type ship struct {
 	position
 	width  float32
 	height float32
 	speed  float32
-	score  int
 	color  color
 }
 
@@ -160,32 +118,39 @@ func lerp(a float32, b float32, pct float32) float32 {
 	return a + pct*(b-a)
 }
 
-func (paddle *paddle) draw(pixels []byte) {
-	startX := int(paddle.x - paddle.width/2)
-	startY := int(paddle.y - paddle.height/2)
+func (ship *ship) draw(pixelsize int, pixels []byte) {
+	startX := int(ship.position.x) - (pixelsize*16)/2
+	startY := int(ship.position.y) - (pixelsize*16)/2
 
-	for y := 0; y < int(paddle.height); y++ {
-		for x := 0; x < int(paddle.width); x++ {
-			setPixel(startX+x, startY+y, paddle.color, pixels)
+	for i, v := range shipGraphic {
+		if v == 1 {
+			for y := startY; y < startY+pixelsize; y++ {
+				for x := startX; x < startX+pixelsize; x++ {
+					setPixel(x, y, ship.color, pixels)
+				}
+			}
+		}
+		startX += pixelsize
+		if (i+1)%16 == 0 {
+			startY += pixelsize
+			startX -= pixelsize * 16
 		}
 	}
-
-	numX := lerp(paddle.x, getCenter().x, 0.2)
-	drawNumber(position{numX, 35}, paddle.color, 10, paddle.score, pixels)
 }
 
-func (paddle *paddle) update(keyState []uint8, elapsedTime float32) {
-	if keyState[sdl.SCANCODE_UP] != 0 {
-		paddle.y -= paddle.speed * elapsedTime
+func (ship *ship) update(keyState []uint8, elapsedTime float32) {
+	if keyState[sdl.SCANCODE_W] != 0 {
+		ship.y -= ship.speed * elapsedTime
 	}
-	if keyState[sdl.SCANCODE_DOWN] != 0 {
-		paddle.y += paddle.speed * elapsedTime
+	if keyState[sdl.SCANCODE_S] != 0 {
+		ship.y += ship.speed * elapsedTime
 	}
-
-	// if math.Abs(float64(controllerAxis)) > 1500 {
-	// 	pct := float32(controllerAxis) / 32767.0
-	// 	paddle.y += paddle.speed * pct * elapsedTime
-	// }
+	if keyState[sdl.SCANCODE_A] != 0 {
+		ship.x -= ship.speed * elapsedTime
+	}
+	if keyState[sdl.SCANCODE_D] != 0 {
+		ship.x += ship.speed * elapsedTime
+	}
 }
 
 func setPixel(x, y int, c color, pixels []byte) {
@@ -199,10 +164,6 @@ func setPixel(x, y int, c color, pixels []byte) {
 
 }
 
-func (paddle *paddle) aiUpdate(ball *ball, elapsedTime float32) {
-	paddle.y = ball.y
-}
-
 func clear(pixels []byte) {
 	for i := range pixels {
 		pixels[i] = 0
@@ -210,8 +171,6 @@ func clear(pixels []byte) {
 }
 
 func main() {
-
-	// Required for Mac
 	err := sdl.Init(sdl.INIT_EVERYTHING)
 	if err != nil {
 		fmt.Println(err)
@@ -219,7 +178,7 @@ func main() {
 	}
 	defer sdl.Quit()
 
-	window, err := sdl.CreateWindow("Testing SDL2", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	window, err := sdl.CreateWindow("Saving Ana", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		int32(winWidth), int32(winHeight), sdl.WINDOW_SHOWN)
 	if err != nil {
 		fmt.Println(err)
@@ -241,26 +200,16 @@ func main() {
 	}
 	defer tex.Destroy()
 
-	// var controllerHandlers []*sdl.GameController
-	// for i := 0; i < sdl.NumJoysticks(); i++ {
-	// 	controllerHandlers = append(controllerHandlers, sdl.GameControllerOpen(i))
-	// 	defer controllerHandlers[i].Close()
-	// }
-
 	pixels := make([]byte, winWidth*winHeight*4)
 
-	player1 := paddle{position{50, 100}, 20, 100, 300, 0, color{255, 255, 255}}
-	player2 := paddle{position{float32(winWidth) - 50, 700}, 20, 100, 300, 0, color{255, 255, 255}}
+	ship := ship{position{50, 100}, 20, 100, 300, color{255, 255, 255}}
 	ball := ball{position{300, 300}, 20, 400, 400, color{255, 255, 255}}
 
 	keyState := sdl.GetKeyboardState()
 
 	var frameStart time.Time
 	var elapsedTime float32
-	// var controllerAxis int16
 
-	// For Mac
-	// OSX retuires that you consume events for windows to open and work properly
 	for {
 		frameStart = time.Now()
 
@@ -271,29 +220,11 @@ func main() {
 			}
 		}
 
-		// for _, controller := range controllerHandlers {
-		// 	if controller != nil {
-		// 		controllerAxis = controller.GetAxis(sdl.CONTROLLER_AXIS_LEFTY)
-		// 	}
-		// }
-
-		if state == play {
-			player1.update(keyState, elapsedTime)
-			player2.aiUpdate(&ball, elapsedTime)
-			ball.update(&player1, &player2, elapsedTime)
-		} else if state == start {
-			if keyState[sdl.SCANCODE_SPACE] != 0 {
-				if player1.score == 3 || player2.score == 3 {
-					player1.score = 0
-					player2.score = 0
-				}
-				state = play
-			}
-		}
+		ship.update(keyState, elapsedTime)
+		ball.update(&ship, elapsedTime)
 
 		clear(pixels)
-		player1.draw(pixels)
-		player2.draw(pixels)
+		ship.draw(4, pixels)
 		ball.draw(pixels)
 
 		tex.Update(nil, pixels, winWidth*4)
