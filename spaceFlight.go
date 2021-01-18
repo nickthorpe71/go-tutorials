@@ -83,7 +83,7 @@ func (debris *debris) update(ship *ship, elapsedTime float32) {
 		debris.x = 20 + float32(rand.Intn(winWidth-40))
 		debris.radius = 20 + float32(rand.Intn(20))
 		debris.yvelocity = 100 + float32(rand.Intn(350))
-		debris.xvelocity = -10 + float32(rand.Intn(10))
+		debris.xvelocity = -20 + float32(rand.Intn(20))
 	}
 
 	if debris.x-debris.radius < ship.x+ship.width/3 && debris.x+debris.radius > ship.x-ship.width/3 {
