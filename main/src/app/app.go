@@ -186,7 +186,7 @@ func createAllNodesAndChoices() storyNode {
 	lobby.addChoice("Walk", "to the dock of Port 401", false, "", &port401)
 	lobby.addChoice("Saunter", "to the space bodega", false, "", &spaceBodega)
 	lobby.addChoice("Talk", "to man standing by the lightpost", true, "Topps: \"Whelp looks like the life of a bounty hunter is just wandering around talking to people, must be nice! This Jer Banata fella you are after is a small fry compared to some fo the fish you've fried. Capturing him shouldn't take you more than 15 to 20 minutes.\"", &lobby)
-	lobby.addChoice("Inspect", "man standing by the lightpost", true, "--Scanner--\nName: Glenn (Uno) Topps\nOccupation: n/a\nHe is wearing a ragged brown cloak which covers his face. All that portrudes from the hood is a lit cigarette and a red glow from what looks to be where one of his eyes might be.", &lobby)
+	lobby.addChoice("Scan", "man standing by the lightpost", true, "--Scanner--\nName: Glenn (Uno) Topps\nOccupation: n/a\nHe is wearing a ragged brown cloak which covers his face. All that portrudes from the hood is a lit cigarette and a red glow from what looks to be where one of his eyes might be.", &lobby)
 
 	// P401
 	port401.addChoice("Amble", "to the space bodega", false, "", &spaceBodega)
@@ -214,7 +214,7 @@ func createAllNodesAndChoices() storyNode {
 	diner.addChoice("Order", "a meal from the diner", true, "describe a tasty meal", &diner)
 	diner.addChoice("Drink", "coffee", true, "describe coffee", &diner)
 	diner.addChoice("Speak", "to the woman in booth 13", true, "she tells you about the bounty, says you are cute, and asks if you want to join her for breakfast some time", &diner)
-	diner.addChoice("Check out", "the woman in booth 13", true, "Scanner: Name, Occupation - description, clothes, appearance, demeaner, etc. Attractive", &diner)
+	diner.addChoice("Scan", "the woman in booth 13", true, "Scanner: Name, Occupation - description, clothes, appearance, demeaner, etc. Attractive", &diner)
 
 	// Bathroom
 	bathroom.addChoice("Prowl", "to the dock of Port 402", false, "", &port402)
