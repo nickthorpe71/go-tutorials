@@ -10,11 +10,19 @@ import (
 // Tutorial
 // https://www.youtube.com/watch?v=VzBGi_n65iU&ab_channel=NicJackson
 
+// GO HTTP docs
+// https://golang.org/pkg/net/http/
+
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(response http.ResponseWriter, request *http.Request) {
 		log.Println("Hello Internet")
-		data, _ := ioutil.ReadAll(r.Body)
-		fmt.Fprintf(rw, "Hello %s\n", data)
+		data, err := ioutil.ReadAll(request.Body)
+		if err != nil {
+			http.Error(response, "Oooops", http.StatusBadRequest)
+			return
+		}
+
+		fmt.Fprintf(response, "Hello %s\n", data)
 	})
 
 	http.HandleFunc("/north", func(http.ResponseWriter, *http.Request) {
