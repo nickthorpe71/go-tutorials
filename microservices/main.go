@@ -8,7 +8,8 @@ import (
 )
 
 // Tutorial
-// https://www.youtube.com/watch?v=VzBGi_n65iU&ab_channel=NicJackson
+// 1. https://www.youtube.com/watch?v=VzBGi_n65iU&ab_channel=NicJackson
+// 2. https://www.youtube.com/watch?v=hodOppKJm5Y&ab_channel=NicJackson <-
 
 // GO HTTP docs
 // https://golang.org/pkg/net/http/
