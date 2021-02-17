@@ -249,7 +249,7 @@ func createAllNodesAndChoices() storyNode {
 	bar.addChoice("Light", "a cigarette", true, "describe smoking", &bar)
 	bar.addChoice("Order Whisky", "because it's been one of those days", true, "describe whisky drinking here", &bar)
 	bar.addChoice("Order Beer", "casually", true, "describe beer drinking here and maybe conversation with the bartender", &bar)
-	bar.addChoice("Watch", "the bartender", true, "Scanner: Name, Occupation - describe Anigun while they work", &bar)
+	bar.addChoice("Scan", "the bartender", true, "Scanner: Name, Occupation - describe Anigun while they work", &bar)
 	bar.addChoice("Chat", "with the bartender", true, "conversation with the bartender", &bar)
 
 	return start
